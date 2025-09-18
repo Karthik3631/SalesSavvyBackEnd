@@ -16,6 +16,7 @@ import com.example.demo.entity.User;
 import com.example.demo.service.AuthService;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
@@ -42,7 +43,7 @@ public class AuthController {
 
 			response.addHeader("Set-Cookie",
 					String.format("authToken=%s; HttpOnly; Path=/; Max-Age=3600; SameSite=None", token));
-			
+
 			Map<String, Object> responseBody = new HashMap<>();
 			responseBody.put("message", "Login successful");
 			responseBody.put("role", user.getRole().name());
@@ -52,6 +53,32 @@ public class AuthController {
 		catch (RuntimeException e)
 		{
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", e.getMessage()));
+		}
+	}
+
+
+
+	@PostMapping("/logout")
+	public ResponseEntity<Map<String, String>> logout(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			User authenticatedUser = (User) request.getAttribute("authenticatedUser");
+
+			authService.logout(authenticatedUser);
+
+			Cookie cookie = new Cookie("authToken", null);
+			cookie.setHttpOnly(true);
+			cookie.setMaxAge(0);
+			cookie.setPath("/");
+
+			response.addCookie(cookie);
+			
+			return ResponseEntity.ok(Map.of("message", "Logout successful"));
+			
+		} catch (RuntimeException e) {
+
+			Map<String, String> errorResponse = new HashMap<>();
+			errorResponse.put("message", "Logout failed");
+			return ResponseEntity.status(500).body(errorResponse);
 		}
 	}
 }

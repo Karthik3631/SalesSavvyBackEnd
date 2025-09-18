@@ -111,4 +111,15 @@ public class AuthService {
 				.getSubject();
 	}
 
+	public void logout(User authenticatedUser){
+
+		int userId = authenticatedUser.getUserId();
+
+		JWTToken token = jwtTokenRepository.findByUserId(userId);
+
+		if (token != null) {
+			jwtTokenRepository.delete(token);
+		}
+	}
+
 }
