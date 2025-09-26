@@ -24,9 +24,11 @@ public class Order {
 	private int userId;
 	@Column(name = "total_amount", nullable = false)
 	private BigDecimal totalAmount;
+	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", nullable = false)
 	private OrderStatus status;
+	
 	@Column(name = "created_at", nullable = false, updatable = false)
 	private LocalDateTime createdAt;
 	@Column(name = "updated_at")

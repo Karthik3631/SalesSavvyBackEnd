@@ -28,23 +28,23 @@ public class AdminBusinessService {
     }
 
     public Map<String, Object> calculateMonthlyBusiness(int month, int year) {
-        List<Order> successfulOrders = orderRepository.findSuccessfulOrdersByMonthAndYear(month, year);
+        List<Order> successfulOrders = orderRepository.findSuccessfulOrdersByMonthAndYear(month, year,OrderStatus.SUCCESS);
         return calculateBusinessMetrics(successfulOrders);
     }
 
     public Map<String, Object> calculateDailyBusiness(LocalDate date) {
-        List<Order> successfulOrders = orderRepository.findSuccessfulOrdersByDate(date);
+        List<Order> successfulOrders = orderRepository.findSuccessfulOrdersByDate(date,OrderStatus.SUCCESS);
         return calculateBusinessMetrics(successfulOrders);
     }
 
     public Map<String, Object> calculateYearlyBusiness(int year) {
-        List<Order> successfulOrders = orderRepository.findSuccessfulOrdersByYear(year);
+        List<Order> successfulOrders = orderRepository.findSuccessfulOrdersByYear(year,OrderStatus.SUCCESS);
         return calculateBusinessMetrics(successfulOrders);
     }
 
     public Map<String, Object> calculateOverallBusiness() {
-        List<Order> successfulOrders = orderRepository.findAllByStatus("SUCCESS"); //or OrderStatus.SUCCESS.name()
-        BigDecimal totalBusiness = orderRepository.calculateOverallBusiness();
+        List<Order> successfulOrders = orderRepository.findAllByStatus(OrderStatus.SUCCESS); //or OrderStatus.SUCCESS.name()
+        BigDecimal totalBusiness = orderRepository.calculateOverallBusiness(OrderStatus.SUCCESS);
         Map<String, Object> response = calculateBusinessMetrics(successfulOrders);
         response.put("totalBusiness", totalBusiness.doubleValue());
         return response;
