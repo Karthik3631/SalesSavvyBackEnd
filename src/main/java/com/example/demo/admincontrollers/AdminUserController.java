@@ -11,6 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/user")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class AdminUserController {
     private final AdminUserService adminUserService;
 
@@ -41,16 +42,16 @@ public class AdminUserController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+        	e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong⚠️");
         }
     }
 
     @GetMapping("/getbyid")
-    public ResponseEntity<?> getUserById(@RequestBody Map<String, Integer> userRequest) {
+    public ResponseEntity<?> getUserById(@RequestParam Integer userId) {
         try {
-            Integer userId = userRequest.get("userId");
+        	
             User user = adminUserService.getUserById(userId);
-            
             return ResponseEntity.ok(user);
          } 
         catch (Exception e) {

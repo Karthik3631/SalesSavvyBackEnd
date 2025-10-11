@@ -69,10 +69,12 @@ public class CartService {
 			Product product = cartItem.getProduct();
 
 			List<ProductImage> productImages = productImageRepository.findByProduct_ProductId(product.getProductId());
-//			String imageUrl = (productImages != null && !productImages.isEmpty())
-//					? productImages.get(0).getImageUrl()
-//							: "default-image-url";
-			String imageUrl = productImages.get(0).getImageUrl();
+			String imageUrl = (productImages != null && !productImages.isEmpty())
+					? productImages.get(0).getImageUrl()
+							: "default-image-url";
+			
+			// if some image iin databse delete this will not work 
+			//String imageUrl = productImages.get(0).getImageUrl();
 
 			productDetails.put("product_id", product.getProductId());
 			productDetails.put("image_url", imageUrl);

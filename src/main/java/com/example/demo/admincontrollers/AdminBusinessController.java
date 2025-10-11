@@ -9,6 +9,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/business")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class AdminBusinessController {
 
     private final AdminBusinessService adminBusinessService;

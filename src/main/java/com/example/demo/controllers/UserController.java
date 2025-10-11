@@ -13,12 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 
-@CrossOrigin
 @RestController
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RequestMapping("/api/users")
 public class UserController {
 	private final UserService userService;
-	@Autowired
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
